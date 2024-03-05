@@ -121,14 +121,19 @@ class MainApplication(tk.Frame):
             messagebox.showwarning(message="The specified data file doesn't exist!")
             return
         data = read_csv(full_path)  # read in the data
-        # select the figure dedicated to the chosen channel and clear it
-        plt.figure(channel, clear=True)
-        # plot and label the data
-        plt.plot(data["Time"], data[f"CH{channel}"])
-        plt.title(f"{self.data_fname.get()}: CH{channel}")
-        plt.xlabel("Time [s]")
-        plt.ylabel(f"CH{channel} [V]")
-        plt.show()
+        try:
+            # select the figure dedicated to the chosen channel and clear it
+            plt.figure(channel, clear=True)
+            # plot and label the data
+            plt.plot(data["Time"], data[f"CH{channel}"])
+            plt.title(f"{self.data_fname.get()}: CH{channel}")
+            plt.xlabel("Time [s]")
+            plt.ylabel(f"CH{channel} [V]")
+            plt.show()
+        except KeyError:
+            messagebox.showwarning(
+                message="Couldn't plot data from channel {channel}; did you modify the column labels of the csv?"
+            )
 
     def create_file_save_frame(
         self,

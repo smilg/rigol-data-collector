@@ -1,41 +1,15 @@
 import re
-import sys
 
 from pyvisa import ResourceManager
 from pyvisa.errors import LibraryError, VisaIOError
 
-def is_valid_folder_name(name: str):
-    # Define a regular expression pattern to match forbidden characters
-    ILLEGAL_NTFS_CHARS = r'[<>:/\\|?*\"]|[\0-\31]'
-    # Define a list of forbidden names
-    FORBIDDEN_NAMES = ['CON', 'PRN', 'AUX', 'NUL',
-                       'COM1', 'COM2', 'COM3', 'COM4', 'COM5',
-                       'COM6', 'COM7', 'COM8', 'COM9',
-                       'LPT1', 'LPT2', 'LPT3', 'LPT4', 'LPT5',
-                       'LPT6', 'LPT7', 'LPT8', 'LPT9']
-    # Check for forbidden characters
-    match = re.search(ILLEGAL_NTFS_CHARS, name)
-    if match:
-        raise ValueError(
-            f"Invalid character '{match[0]}' for filename {name}")
-    # Check for forbidden names
-    platform = sys.platform
-    if platform.startswith('cygwin') or platform.startswith('win32'):
-        if name.upper() in FORBIDDEN_NAMES:
-            raise ValueError(f"{name} is a reserved folder name in Windows")
-        # Check for empty name (disallowed in Windows)
-        if name.strip() == "":
-            raise ValueError("Empty file name not allowed in Windows")
-    # Check for names starting or ending with dot or space
-    match = re.match(r'^[. ]|.*[. ]$', name)
-    if match:
-        raise ValueError(
-            f"Invalid start or end character ('{match[0]}')"
-            f" in folder name {name}"
-        )    
-        
-def find_visas():
-    # Return all VISA addresses (and the backend) which map to a Rigol DS1000Z.
+def find_visas() -> list[tuple]:
+    '''
+    Return all VISA addresses (and the backend) which map to a Rigol DS1000Z.
+
+    Returns:
+        list[tuple]: A list of VISA addresses and backends mapping to Rigol DS1000Zs.
+    '''
     RIGOL_IDN_REGEX = "^RIGOL TECHNOLOGIES,DS1[01][057]4Z(-S)?( Plus)?,.+$"
 
     visas = []
@@ -49,7 +23,7 @@ def find_visas():
         for visa_name in visa_manager.list_resources():
             try:
                 visa_resource = visa_manager.open_resource(visa_name)
-                match = re.search(RIGOL_IDN_REGEX, visa_resource.query("*IDN?"))
+                match = re.search(RIGOL_IDN_REGEX, visa_resource.query("*IDN?"))    # type:ignore
                 if match:
                     visas.append((visa_name, visa_backend))
             except VisaIOError:
@@ -58,3 +32,20 @@ def find_visas():
                 visa_resource.close()
 
     return visas
+
+def add_extension_if_needed(path: str, extension: str) -> str:
+    '''
+    Adds a file extension to a path if the path doesn't already have that
+    extension.
+
+    Args:
+        path (str): A file path.
+        extension (str): A file extension. Must begin with "." (e.g. ".csv", not "csv").
+
+    Returns:
+        str: The supplied path with the supplied file extension.
+    '''
+    if path.endswith(extension):
+        return path
+    else:
+        return path + extension

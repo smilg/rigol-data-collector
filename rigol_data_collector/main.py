@@ -7,6 +7,8 @@ from tkinter import StringVar
 from tkinter import ttk
 
 from pyvisa import ResourceManager
+import matplotlib.pyplot as plt
+from pandas import read_csv
 
 import util
 from pathcheck_so import is_path_exists_or_creatable
@@ -18,7 +20,7 @@ class MainApplication(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self.parent = parent
-        
+
         self.osc = None
         self.visa_name, self.visa_backend = "", ""
 
@@ -57,6 +59,7 @@ class MainApplication(tk.Frame):
             1,
             0,
             "Save Data",
+            "Save data",
             self.data_fpath,
             self.data_fname,
             self.data_save_time,
@@ -64,11 +67,37 @@ class MainApplication(tk.Frame):
             self.save_data,
         )
 
+        # frame for plotting data previews
+        plot_lf = ttk.LabelFrame(self, text="Plot Data")
+        plot_lf.grid(row=2, column=0, padx=20, pady=20, sticky=tk.EW)
+        # this doesn't work properly in a for loop and I don't feeling like troubleshooting it
+        ttk.Button(
+            plot_lf,
+            text=f"Plot CH1 data",
+            command=lambda: self.plot(1),
+        ).grid(column=0, row=0, sticky=tk.EW)
+        ttk.Button(
+            plot_lf,
+            text=f"Plot CH2 data",
+            command=lambda: self.plot(2),
+        ).grid(column=1, row=0, sticky=tk.EW)
+        ttk.Button(
+            plot_lf,
+            text=f"Plot CH3 data",
+            command=lambda: self.plot(3),
+        ).grid(column=2, row=0, sticky=tk.EW)
+        ttk.Button(
+            plot_lf,
+            text=f"Plot CH4 data",
+            command=lambda: self.plot(4),
+        ).grid(column=3, row=0, sticky=tk.EW)
+
         # frame for exporting screenshots
         self.create_file_save_frame(
-            2,
+            3,
             0,
             "Save Screenshots",
+            "Save screenshot",
             self.scrshot_fpath,
             self.scrshot_fname,
             self.scrshot_save_time,
@@ -76,11 +105,37 @@ class MainApplication(tk.Frame):
             self.save_scrshot,
         )
 
+    def plot(self, channel: int) -> None:
+        """
+        Plots the data from the specified channel from the currently selected data file.
+        Assumes the file is in the format created by this program (i.e. headers are Time, CH1-4)
+
+        Args:
+            channel (int): The channel number to plot (1-4).
+        """
+        # make sure the data file exists; tell the user if it doesn't
+        full_path = util.add_extension_if_needed(
+            os.path.join(self.data_fpath.get(), self.data_fname.get()), ".csv"
+        )
+        if not os.path.isfile(full_path):
+            messagebox.showwarning(message="The specified data file doesn't exist!")
+            return
+        data = read_csv(full_path)  # read in the data
+        # select the figure dedicated to the chosen channel and clear it
+        plt.figure(channel, clear=True)
+        # plot and label the data
+        plt.plot(data["Time"], data[f"CH{channel}"])
+        plt.title(f"{self.data_fname.get()}: CH{channel}")
+        plt.xlabel("Time [s]")
+        plt.ylabel(f"CH{channel} [V]")
+        plt.show()
+
     def create_file_save_frame(
         self,
         row: int,
         column: int,
         frame_label: str,
+        save_button_text: str,
         path_var: StringVar,
         name_var: StringVar,
         status_var: StringVar,
@@ -119,7 +174,7 @@ class MainApplication(tk.Frame):
         ttk.Entry(lf, width=40, textvariable=name_var).grid(column=1, row=1)
 
         # save button and status text
-        ttk.Button(lf, text="Save screenshot", command=save_func).grid(column=1, row=2)
+        ttk.Button(lf, text=save_button_text, command=save_func).grid(column=1, row=2)
         ttk.Label(lf, textvariable=status_var).grid(column=2, row=2)
 
     def on_close(self) -> None:

@@ -14,12 +14,6 @@ numpy = "^1.26.4"
 matplotlib = "^3.8.3"
 pandas = "^2.2.1"
 
-
-[tool.poetry.group.dev.dependencies]
-ipykernel = "^6.29.3"
-ipympl = "^0.9.3"
-zeroconf = "^0.131.0"
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

@@ -8,7 +8,7 @@ I don't guarantee that this program will work at all for anyone else, but I don'
 
 To use this project, first clone the repository and enter the root directory of the cloned repo.
 
-This project was only tested with Python 3.11. It may work with other versions of Python 3, but YMMV. It uses numpy and PyVISA. If you have [Poetry](https://python-poetry.org/), run `poetry install` to get the required dependencies. If you don't have Poetry, you can run `pip install -r requirements.txt` in the root directory of the repo to install the dependencies.
+This project was only tested with Python 3.11. It may work with other versions of Python 3, but YMMV. It depends on numpy, pandas, matplotlib, and PyVISA. You may need pyvisa-py as well. If you have [Poetry](https://python-poetry.org/), run `poetry install --only main` to get the required dependencies. If you don't have Poetry, you can run `pip install -r requirements.txt` to install the dependencies.
 
 ## using
 
@@ -18,11 +18,11 @@ When opened, you should see something like the window shown below:
 
 ![Screenshot of the project's GUI](ui.png)
 
-Connect the USB cable to the oscilloscope, then click on "Connect scope".
+Connect the USB cable to the oscilloscope, then click on "Connect scope". The scope is disconnected automatically when closing the window.
 
 To save data, add the path to the directory where the data should be saved to the text box labelled "File path". You can press the button next to that text box to select a directory using a GUI.
 
-Input the desired name of the data file in the box labelled "File name". The program will automatically add the .csv extension if you don't. ***If you already have a file with the same name at the selected location, it will be overwritten when saving data.*** To save data to the selected location, click "Save data".
+Input the desired name of the data file in the box labelled "File name". The program will automatically add the .csv extension if you don't. To save data to the selected location, click "Save data". After you've saved data, you can preview it using the plot buttons. These will plot data from the file indicated by the text entries (in the "Save Data" section).
 
 Saving a screenshot of the oscilloscope works almost identically. Screenshots are saved as `.png` files. (The scope and library support other formats, but I left it as the default.)
 

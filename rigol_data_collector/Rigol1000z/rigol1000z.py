@@ -276,6 +276,6 @@ class Rigol1000z(Rigol1000zCommandMenu):
                 os.remove(filename)
             except OSError:
                 pass
-            _np.savetxt(filename, _np.column_stack((time_series, *all_channel_data)), '%.12e', ', ', '\n', header='Time, CH1, CH2, CH3, CH4\n')
+            _np.savetxt(filename, _np.column_stack((time_series, *all_channel_data)), '%.12e', ',', '\n', header='Time,CH1,CH2,CH3,CH4', comments='')
 
         return time_series, all_channel_data

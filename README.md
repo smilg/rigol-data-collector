@@ -22,7 +22,7 @@ Connect the USB cable to the oscilloscope, then click on "Connect scope". The sc
 
 To save data, add the path to the directory where the data should be saved to the text box labelled "File path". You can press the button next to that text box to select a directory using a GUI.
 
-Input the desired name of the data file in the box labelled "File name". The program will automatically add the .csv extension if you don't. To save data to the selected location, click "Save data". After you've saved data, you can preview it using the plot buttons. These will plot data from the file indicated by the text entries (in the "Save Data" section).
+Input the desired name of the data file in the box labelled "File name". The program will automatically add the .csv extension if you don't. To save data to the selected location, click "Save data". After you've saved data, you can preview it using the plot buttons. These will plot data from the file indicated by the text entries (in the "Save Data" section). Note that if you change the headers of the selected csv, the plot buttons won't work.
 
 Saving a screenshot of the oscilloscope works almost identically. Screenshots are saved as `.png` files. (The scope and library support other formats, but I left it as the default.)
 

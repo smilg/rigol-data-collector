@@ -328,7 +328,7 @@ class MainApplication(tk.Frame):
             save_func(*leading_args, full_path)
             # update the status message with the name of the saved file and the current time
             status_var.set(
-                f'{self.scrshot_fname.get()} saved at {datetime.now().strftime("%H:%M:%S")}'
+                f'{os.path.basename(full_path)} saved at {datetime.now().strftime("%I:%M:%S %p")}'
             )
         else:
             messagebox.showwarning(message="Scope not connected!")

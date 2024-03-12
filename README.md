@@ -10,6 +10,8 @@ To use this project, first clone the repository and enter the root directory of 
 
 This project was only tested with Python 3.11. It may work with other versions of Python 3, but YMMV. It depends on numpy, pandas, matplotlib, and PyVISA. You may need pyvisa-py as well. If you have [Poetry](https://python-poetry.org/), run `poetry install --only main` to get the required dependencies. If you don't have Poetry, you can run `pip install -r requirements.txt` to install the dependencies.
 
+If you're on Linux, you may need to reload udev rules after installing the VISA library (pyvisa-py, ni-visa, or similar). You can do this by logging out and back in or restarting your computer (see [issue #1](https://github.com/smilg/rigol-data-collector/issues/1#issue-2180666499)). Depending on your distro, there may be ways to do this without relogging or restarting.
+
 ## using
 
 To run the app, run the script `./rigol_data_collector/main.py`. If you're using Poetry, you can do this with `poetry run python ./rigol_data_collector/main.py`. Otherwise, run the file in whatever way is appropriate based on how you installed the dependencies.

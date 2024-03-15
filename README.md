@@ -8,7 +8,7 @@ I don't guarantee that this program will work at all for anyone else, but I don'
 
 To use this project, first clone the repository and enter the root directory of the cloned repo.
 
-This project was only tested with Python 3.11. It may work with other versions of Python 3, but YMMV. It depends on numpy, pandas, matplotlib, and PyVISA. You may need pyvisa-py as well. If you have [Poetry](https://python-poetry.org/), run `poetry install --only main` to get the required dependencies. If you don't have Poetry, you can run `pip install -r requirements.txt` to install the dependencies.
+This project was only tested with Python 3.11. It may work with other versions of Python 3, but YMMV. You need to install the NI-VISA driver to communicate with the scope. [You can find it here](https://www.ni.com/en/support/downloads/drivers/download.ni-visa.html). If you have [Poetry](https://python-poetry.org/), run `poetry install --only main` to get the required dependencies. If you don't have Poetry, you can run `pip install -r requirements.txt` to install the dependencies.
 
 If you're on Linux, you may need to reload udev rules after installing the VISA library (pyvisa-py, ni-visa, or similar). You can do this by logging out and back in or restarting your computer (see [issue #1](https://github.com/smilg/rigol-data-collector/issues/1#issue-2180666499)). Depending on your distro, there may be ways to do this without relogging or restarting.
 
@@ -29,3 +29,7 @@ Input the desired name of the data file in the box labelled "File name". The pro
 Saving a screenshot of the oscilloscope works almost identically. Screenshots are saved as `.png` files. (The scope and library support other formats, but I left it as the default.)
 
 If you need to communicate with the scope from a different program, you can release the VISA resource by clicking "Disconnect scope". It can be reconnected using the "Connect scope" button.
+
+## problems?
+
+If you try to run the script and get the error "`No module called tkinter`" or similar, you need to install tkinter. Installing it through pip will not work. If you're on Windows, you need to re-run the Python installer and make sure the box "tcl/tk and IDLE" is checked in the Optional Features screen. If you're on Linux, you can use your package manager (e.g. for Ubuntu, `sudo apt-get install python3-tk`). If you're on MacOS, you can install it with brew: `brew install python-tk`.

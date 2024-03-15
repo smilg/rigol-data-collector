@@ -8,7 +8,7 @@ I don't guarantee that this program will work at all for anyone else, but I don'
 
 To use this project, first clone the repository and enter the root directory of the cloned repo.
 
-This project was only tested with Python 3.11. It may work with other versions of Python 3, but YMMV. You need to install the NI-VISA driver to communicate with the scope. [You can find it here](https://www.ni.com/en/support/downloads/drivers/download.ni-visa.html). If you have [Poetry](https://python-poetry.org/), run `poetry install --only main` to get the required dependencies. If you don't have Poetry, you can run `pip install -r requirements.txt` to install the dependencies.
+This project was only tested with Python 3.11. It may work with other versions of Python 3, but YMMV. You may need to install the NI-VISA driver to communicate with the scope, but try it without first. [You can find it here](https://www.ni.com/en/support/downloads/drivers/download.ni-visa.html). If you have [Poetry](https://python-poetry.org/), run `poetry install --only main` to get the required dependencies. If you don't have Poetry, you can run `pip install -r requirements.txt` to install the dependencies.
 
 If you're on Linux, you may need to reload udev rules after installing the VISA library (pyvisa-py, ni-visa, or similar). You can do this by logging out and back in or restarting your computer (see [issue #1](https://github.com/smilg/rigol-data-collector/issues/1#issue-2180666499)). Depending on your distro, there may be ways to do this without relogging or restarting.
 

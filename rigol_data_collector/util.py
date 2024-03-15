@@ -19,6 +19,8 @@ def find_visas() -> list[tuple]:
             visa_manager = ResourceManager(visa_backend)
         except LibraryError:
             pass
+        except OSError:
+            pass
 
         for visa_name in visa_manager.list_resources():
             try:

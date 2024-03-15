@@ -197,12 +197,7 @@ class MainApplication(tk.Frame):
         self.scope_status_label.update()
         if not self.check_scope_connected():
             if self.visa_name == "":
-                try:
-                    visas = util.find_visas()
-                except OSError:
-                    messagebox.showerror(
-                        message="Error with VISA library! Did you install NI-VISA?."
-                    )
+                visas = util.find_visas()
                 try:
                     self.visa_name, self.visa_backend = visas[0]
                 except IndexError:
